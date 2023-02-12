@@ -12,17 +12,3 @@
         }
       }
     }
-    
-    function connect(){    
-        $host = 'localhost';
-        $user = 'root';
-        $password = '';
-
-        $conection =  new mysqli($host, $user, $password);
-        if ($conection->connect_errno) {
-            echo "Fallo al conectar a MySQL: (" . $conection->connect_errno . ") " . $conection->connect_error;
-            return false;
-        }
-        return true;
-    }
-?>

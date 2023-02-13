@@ -5,8 +5,8 @@ function connect()
     $host = 'localhost';
     $user = 'root';
     $password = '';
-    $dbName = 'appjsphp';
-    $dbPort = 3306;
+    $dbName = 'appJsPhp_databse';
+    $dbPort = 3309;
 
     $connection =  new mysqli($host, $user, $password, $dbName, $dbPort);
     if ($connection->connect_errno) {

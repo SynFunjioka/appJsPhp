@@ -43,7 +43,7 @@ function getList()
 
 
     if (isset($connection)) {
-        $query = "SELECT * FROM appjsphp.tareas WHERE eliminado = 0;";
+        $query = "SELECT * FROM tareas WHERE eliminado = 0;";
         $res = mysqli_query($connection, $query);
 
         if (!$res) {
@@ -70,7 +70,7 @@ function create($task)
     $connection = connect();
 
     if (isset($connection)) {
-        $query = 'INSERT INTO appjsphp.tareas (tarea) values ("' . $task . '");';
+        $query = 'INSERT INTO tareas (tarea) values ("' . $task . '");';
         echo $query . "\n";
         $res = mysqli_query($connection, $query);
 
@@ -89,7 +89,7 @@ function delete($taskID)
 
     if (isset($connection)) {
         echo 'We are connected';
-        $query = 'UPDATE appjsphp.tareas SET eliminado = 1 WHERE id =' . $taskID . ';';
+        $query = 'UPDATE tareas SET eliminado = 1 WHERE id =' . $taskID . ';';
         $res = mysqli_query($connection, $query);
 
         if (!$res) {

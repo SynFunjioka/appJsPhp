@@ -65,6 +65,7 @@ function getList()
         }
         $jsonString = json_encode($json);
         echo $jsonString;
+        $connection->close();
     } else {
         echo 'We had problems to create this new task';
     }
@@ -82,6 +83,7 @@ function create($task)
         if (!$res) {
             die('Query error' . mysqli_error($connection));
         }
+        $connection->close();
         return $res;
     } else {
         echo 'We had problems to create this new task';
@@ -103,6 +105,7 @@ function setStatus($taskID, $isFinished)
             die('Query error' . mysqli_error($connection));
         }
         echo 'Estatus of task ID # '. $taskID . ' update ';
+        $connection->close();
         return $res;
     } else {
         echo 'We had problems to create this new task';
@@ -121,6 +124,7 @@ function delete($taskID)
         if (!$res) {
             die('Query error' . mysqli_error($connection));
         }
+        $connection->close();
         return $res;
     } else {
         echo 'We had problems to create this new task';

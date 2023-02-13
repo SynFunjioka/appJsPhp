@@ -15,6 +15,11 @@ if (isset($_POST['action']) && !empty(isset($_POST['action']))) {
                 echo delete($_POST['taskID']);
             }
             break;
+            
+        case "setStatus": {
+                echo setStatus($_POST['taskID'], $_POST['isFinished']);
+            }
+            break;
 
         default: {
                 return 'No data';
@@ -77,6 +82,27 @@ function create($task)
         if (!$res) {
             die('Query error' . mysqli_error($connection));
         }
+        return $res;
+    } else {
+        echo 'We had problems to create this new task';
+    }
+}
+
+function setStatus($taskID, $isFinished)
+{
+    $connection = connect();
+
+    if (isset($connection)) {
+        // echo 'Estatus of task ID # '. $taskID . ' update to ' . $isFinished ? 0 : 1;
+
+        $query = 'UPDATE tareas SET estatus ='. $isFinished .' WHERE id ="' . intval($taskID) . '";';
+        // echo $query;
+        $res = mysqli_query($connection, $query);
+
+        if (!$res) {
+            die('Query error' . mysqli_error($connection));
+        }
+        echo 'Estatus of task ID # '. $taskID . ' update ';
         return $res;
     } else {
         echo 'We had problems to create this new task';

@@ -1,18 +1,39 @@
 $(document).ready(function () {
+  fetchTasks();
+
+  $('form button').click(function () {
+    let task = $('form input').val();
+    AddNewTask(task);
+    $('form input').val('');
+  });
+
+  $('form input').change(function (e) { 
+    let disabledSubmit = $(this).val().length > 0 ? false : true;
+    console.log(disabledSubmit);
+    $('form button').prop('disabled', disabledSubmit);
+  });
+
+  $('form').keydown(function (e) { 
+    if(e.key === 'Enter'){
+      event.preventDefault();
+    }
+  });
+});
+
+function fetchTasks (){
   $.ajax({
     type: "GET",
     url: "./php/taskController.php",
     data: {action: 'getList' },
     // dataType: "dataType",
     success: function (res) {
-      console.log(res);
       let tasks = JSON.parse(res);
       let htmlTemplate = '';
       tasks.forEach(task => {
         htmlTemplate += 
           `
           <div class="item" id="task-${task.id}">
-            <input type="checkbox" ${task.estatus === 1 ? 'checked' : null}>
+            <input type="checkbox" ${task.estatus == 0 ? 'checked' : null}>
             <p>${task.tarea}</p>
             <button class="trash">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
@@ -25,26 +46,23 @@ $(document).ready(function () {
           </button>
           </div>
           `;
-
-        $('#content').prepend(htmlTemplate);
-        $('[id^="task-"]').each(function (index, element) {
-          let id = ($(element).attr('id')).split("-")[1];
-          console.log('task #', id);
-
-          $(`[id=task-${id}] button`).click(function () {
-            console.log('Delete task #', id);
-            DeleteTask(id);
-          });
+      });
+      $('#content').html(htmlTemplate);
+      $('[id^="task-"]').each(function (index, element) {
+        let id = ($(element).attr('id')).split("-")[1];
+        $(`[id=task-${id}] button`).click(function () {
+          DeleteTask(id);
+        }); 
+        
+        $(`[id=task-${id}] input`).change(function () {
+          console.log('Delete task #', this.checked);
+          let isFinished = this.checked ? true : false;
+          SetTaskStatus(id, isFinished ? 0 : 1);
         });
       });
     }
   });
-
-  $('form button').click(function () {
-    let task = $('form input').val();
-    AddNewTask(task);
-  });
-});
+}
 
 function AddNewTask(task) {
   $.ajax({
@@ -57,6 +75,24 @@ function AddNewTask(task) {
     // dataType: "dataType",
     success: function (response) {
       console.log(response);
+      fetchTasks();
+    }
+  });
+}
+
+function SetTaskStatus(taskID, isFinished){
+  $.ajax({
+    type: "POST",
+    url: "./php/taskController.php",
+    data: {
+      action: 'setStatus',
+      taskID,
+      isFinished
+    },
+    // dataType: "dataType",
+    success: function (response) {
+      console.log('set task status res: ', response);
+      fetchTasks();
     }
   });
 }
@@ -72,6 +108,7 @@ function DeleteTask(taskID){
     // dataType: "dataType",
     success: function (response) {
       console.log(response);
+      fetchTasks();
     }
   });
 }

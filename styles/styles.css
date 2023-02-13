@@ -23,6 +23,10 @@ h1 {
   text-align: center;
 }
 
+#content{
+  border-bottom: 1px solid #F1F1F1;
+}
+
 .item {
   min-height: 70px;
   display: flex;
@@ -68,6 +72,11 @@ button{
   font-size: 30px;
   padding-bottom: 6px;
   border-width: 0;
+}
+
+button:disabled{
+  background-color: #959a9c;
+  cursor: default;
 }
 
 .trash{
